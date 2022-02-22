@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Game/Scenes/Sample/NewUSSFile.uss?fileID=7433441132597879392&amp;guid=2fcf9b0e22073944688eaeaaa82bf905&amp;type=3#NewUSSFile" />
+    <ui:VisualElement style="background-color: rgba(140, 140, 140, 0.5); left: 25%; top: 25%; right: 25%; bottom: 25%; width: 50%; height: 50%;">
+        <ui:Button text="Btn" display-tooltip-when-elided="true" name="start-btn" class="game-stbtn" style="width: 116px; height: 35px;" />
+        <ui:ProgressBar title="my-progress" low-value="31.7" />
+        <ui:DropdownField label="Dropdown" index="-1" />
+        <ui:TextField picking-mode="Ignore" label="Text Field" value="filler text" text="filler text" />
+        <TestOfVIsualEl>
+            <ui:Button text="Button" display-tooltip-when-elided="true" name="test-btn" />
+            <ui:ProgressBar title="my-progress" name="test-progbar" />
+        </TestOfVIsualEl>
+    </ui:VisualElement>
+</ui:UXML>

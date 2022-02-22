@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Game/UI/StStyle.uss?fileID=7433441132597879392&amp;guid=d937c91a50d1b544c876c8d68d8af898&amp;type=3#StStyle" />
+    <PlayerHUD_UI_Manager name="hud" style="width: 100%; height: 100%; flex-direction: column-reverse;">
+        <ui:VisualElement name="hud-slots-box" style="flex-direction: row; justify-content: center; align-items: flex-end;" />
+    </PlayerHUD_UI_Manager>
+</ui:UXML>

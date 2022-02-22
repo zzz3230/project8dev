@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Game/UI/StStyle.uss?fileID=7433441132597879392&amp;guid=d937c91a50d1b544c876c8d68d8af898&amp;type=3#StStyle" />
+    <MainMenuUIManager style="width: 100%; height: 100%;">
+        <ui:VisualElement style="width: 50%; height: 100%; left: 25%; margin-left: 0; margin-right: 0; margin-top: 50px; margin-bottom: 0;">
+            <ui:Button text="Host" display-tooltip-when-elided="true" name="menu-host-btn" class="st-menu-btn" style="font-size: 50%;" />
+            <ui:Button text="Client" display-tooltip-when-elided="true" name="menu-client-btn" class="st-menu-btn" style="font-size: 50%;" />
+            <ui:TextField picking-mode="Ignore" label="IP" value="filler text" text="127.0.0.1:8888" name="menu-ip-textfield" style="color: rgba(58, 58, 58, 255); font-size: 20px;" />
+        </ui:VisualElement>
+    </MainMenuUIManager>
+</ui:UXML>
