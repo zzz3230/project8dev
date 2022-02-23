@@ -234,10 +234,11 @@ MonoBehaviour:
   jumpKeyCode: 32
   runKeyCode: 304
   uiManager: {fileID: 1526017436458118975}
+  inventoryManager: {fileID: 4469875343828514349}
   defBuilderOriginal: {fileID: 4085398913144752455, guid: 26510f2769314bc4783c361d496a9f76, type: 3}
   defBuilder: {fileID: 0}
   isInputMouse: 1
-  slotsCount: 10
+  slotsCount: 9
   animatorMovementSpeed: 1
   pref: {fileID: 8341645332249500415, guid: 8c0c294188d7f42408dadd91e103aea0, type: 3}
 --- !u!114 &5548012813769724630
@@ -296,7 +297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabName: --name--
-  uuid: 00000000-0000-0000-0000-000000000000
+  uuid: 039d8172-a984-449d-b861-a13e5024bb6b
 --- !u!114 &4469875343828514349
 MonoBehaviour:
   m_ObjectHideFlags: 0

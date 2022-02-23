@@ -16,4 +16,9 @@ public static class Log
     {
         Debug.LogError($"[{group}]: {ms}");
     }
+    public static T log<T>(this T obj)
+    {
+        Log.Ms(obj, "fs_logger");
+        return (T)obj;
+    }
 }

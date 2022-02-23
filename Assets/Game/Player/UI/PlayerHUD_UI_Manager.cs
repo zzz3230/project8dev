@@ -8,8 +8,60 @@ using UnityEngine.UIElements;
 public class SlotManager
 {
     public SlotUIManager visualElement;
-    public int localIndex = -1;
-    public int globalIndex = -1;
+    public ItemsManagerPointer itemPointer;
+    
+    public void ViewUpdate()
+    {
+        var slot = visualElement;// uiManager.GetSlot(i);
+
+        if (itemPointer[0].empty)
+        {
+            slot.SetImage(Texture2D.whiteTexture);
+            slot.SetCount(0);
+            return;
+        }
+
+        slot.SetImage(itemPointer[0].info.ico);
+        slot.SetCount(itemPointer[0].count);
+    }
+
+    public static void MoveItems(SlotManager source, SlotManager destination, int count = 1)
+    {
+        var isDestEmpty = destination.itemPointer[0].empty;
+        var sourcePtr = source.itemPointer[0];
+        var destinationPtr = destination.itemPointer[0];
+
+        if (count == source.itemPointer[0].count)
+        {
+            if (isDestEmpty)
+            {
+                source.itemPointer.Swap(destination.itemPointer);
+                return;
+            }
+        }
+
+        if (
+            source.itemPointer[0].info.stackable && 
+            (sourcePtr.info.CompareType(destinationPtr.info) || isDestEmpty))
+        {
+            source.itemPointer.MoveTo(
+                destination.itemPointer, 
+                Mathf.Clamp( 
+                    Mathf.Clamp(
+                        sourcePtr.info.stack - destinationPtr.count,
+                        0,
+                        sourcePtr.count
+                        ),
+                    0,
+                    count
+                    )
+                );
+            return;
+        }
+
+
+        source.itemPointer.Swap(destination.itemPointer);
+    }
 }
 
 public class SlotUIManager : VisualElement
@@ -62,7 +114,7 @@ public class SlotUIManager : VisualElement
 }
 
 
-public class PlayerHUD_UI_Manager : VisualElement
+public class PlayerHUD_UI_Manager : VisualElement, ILoaded
 {
     public void SwitchVisible()
     {
@@ -74,11 +126,14 @@ public class PlayerHUD_UI_Manager : VisualElement
         if (slots.Count == 0)
             return;
         slots.ForEach(slot => slot.Highlight(false));
+        //Log.Ms(index);
         slots[index].Highlight(true);
     }
 
     public int slotsCount = 9;
     List<SlotUIManager> slots = new List<SlotUIManager>();
+
+    public System.Action<object> loaded { get; set; }
 
     public SlotUIManager GetSlot(int index)
     {
@@ -89,6 +144,8 @@ public class PlayerHUD_UI_Manager : VisualElement
     {
         RegisterCallback<GeometryChangedEvent>((ev) =>
         {
+            //Log.Ms("slots spawned");
+
             this.Q("hud-slots-box")?.Clear();
             slots.Clear();
 
@@ -98,6 +155,7 @@ public class PlayerHUD_UI_Manager : VisualElement
                 this.Q("hud-slots-box")?.Add(slots.Last());
             }
 
+            loaded?.Invoke(this);
             //slots[2].Highlight(true);
         });
     }

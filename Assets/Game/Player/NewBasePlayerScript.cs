@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using System.Linq;
 
 public enum Move { Moveable, NotMoveable }
 
@@ -68,6 +69,7 @@ public class NewBasePlayerScript : Character
 
     public PlayerHUD_UI_Manager hudUIManager;
     public UIManager uiManager;
+    public PlayerInventoryManager inventoryManager;
 
     public DefBuilder defBuilderOriginal;
     public DefBuilder defBuilder;
@@ -108,6 +110,40 @@ public class NewBasePlayerScript : Character
 
         hudUIManager = uiManager.Q<PlayerHUD_UI_Manager>("hud");
 
+        //System.Threading.Thread.Sleep(1000);
+        //System.Threading.Tasks.Task.Delay(10000);
+        
+
+        hudUIManager.loaded += (obj) =>
+        {
+            SlotManager[] slots = new SlotManager[slotsCount];
+            for (int i = 0; i < slots.Length; i++)
+            {
+                var itemPointer = ItemsManager.Allocate(1);
+                var visualElement = hudUIManager.GetSlot(i);
+
+                slots[i] = new SlotManager
+                {
+                    itemPointer = itemPointer,
+                    visualElement = visualElement,
+                };
+                //print(slotsCount);
+            }
+
+            inventoryManager.Init(
+                hudUIManager, 
+                slots.Select(s => s.itemPointer).ToArray(),
+                slots
+                );
+
+            //inventoryManager.SetPointers(pointers);
+
+            slots[1].itemPointer[0].info = BasicConsoleScript.Instance.debugItems[0];
+            slots[1].itemPointer[0].count = 23;
+            slots[1].itemPointer[0].empty = false;
+
+            inventoryManager.MoveItem(slots[1], slots[2], 9);
+        };
 
 
         defBuilder = Utils.SpawnBuilder(defBuilderOriginal);
@@ -130,8 +166,9 @@ public class NewBasePlayerScript : Character
             print(res);
         });
     }
-    
 
+    int test_tomove = 8;
+    int test_index = 2;
     public void Update()
     {
         //if(Unity.Netcode.NetworkManager.Singleton.ConnectedClients.Count > 1)
@@ -154,7 +191,12 @@ public class NewBasePlayerScript : Character
         if (air == Move.Moveable || IsGrounded)
             Movement();
 
-
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            inventoryManager.MoveItem(test_index, ++test_index, test_tomove);
+            print("mving: " + test_tomove);
+            test_tomove -= 2;
+        }
 
         if (Input.GetKeyDown(KeyCode.N))
         {

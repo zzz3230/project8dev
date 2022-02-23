@@ -15,17 +15,25 @@ public static class ItemsManagerPointerUtils
         a.sector = b.sector;
         a.offset = b.offset;
         a.count = b.count;
+        a[0].empty = false;
     }
     public static void CopyTo(this ItemsManagerPointer a, ItemsManagerPointer b)
     {
         b[0].info = a[0].info;
         b[0].count = a[0].count;
+        b[0].empty = false;
 
         if(a[0].metadata != null)
             b[0].metadata = Utils.DeepCopy(a[0].metadata);
     }
     public static void MoveTo(this ItemsManagerPointer a, ItemsManagerPointer b, int count)
     {
+        if(count == 0)
+        {
+            Log.Error("moving count == 0", "itemsmanagerpointerutils-move");
+            return;
+        }
+
         var rest = a[0].count - count;
         if(rest < 0)
         {
@@ -37,12 +45,14 @@ public static class ItemsManagerPointerUtils
         {
             SetFrom(b, a);
             a.Remove(0);
+            a[0].empty = true;
         }
         else
         {
             CopyTo(a, b);
             a[0].count = rest;
             b[0].count = count;
+            b[0].empty = false;
         }
     }
 }
@@ -64,11 +74,15 @@ public class ItemsManagerPointer
         set { ItemsManager.SetByGlobalIndex(sector, offset + i, value); }
     }
 
+    public override string ToString()
+    {
+        return $"item ptr [s:{sector} o:{offset} c:{count}] gl:{sector * 1024 + offset}";
+    }
 }
 
 public static class ItemsManager
 {
-    static Dictionary<int, ItemInstance[]> _loadedSectors = new Dictionary<int, ItemInstance[]>();
+    public static Dictionary<int, ItemInstance[]> _loadedSectors = new Dictionary<int, ItemInstance[]>();
 
     public static ItemsManagerPointer Allocate(int count)
     {
@@ -128,11 +142,16 @@ public static class ItemsManager
 
             if (maxFree == count)
             {
+                for (int i = 0; i < count; i++)
+                {
+                    sector[j - count + 1 + i] = ItemInstance.Empty;
+                }
+
                 return new ItemsManagerPointer
                 {
                     sector = index,
                     count = count,
-                    offset = j - count
+                    offset = j - count + 1
                 };
             }
         }
@@ -155,6 +174,8 @@ public static class ItemsManager
         if (!IsSectorLoad(sector))
             LoadSector(sector);
 
+
+        //Log.Ms(sector + " " + index);
 
         return _loadedSectors[sector][index];
     }

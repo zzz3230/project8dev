@@ -26,6 +26,17 @@ public class ItemMetadata
 [System.Serializable]
 public class ItemInfo
 {
+    public bool stackable { get => stack > 1; }
+    public int stack;
+
+    public bool CompareType(ItemInfo other)
+    {
+        if (other == null)
+            return false;
+
+        return id == other.id;
+    }
+
     [JsonConverter(typeof(StringEnumConverter))]
     public SIID id;
     public TEXT name;
@@ -46,5 +57,5 @@ public class ItemInstance
     public ItemInfo info;
     public int count;
 
-    public static readonly ItemInstance Empty = new ItemInstance { empty = true };
+    public static ItemInstance Empty { get => new ItemInstance { empty = true }; } // empty item instance;
 }

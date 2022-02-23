@@ -38,18 +38,21 @@ public class BasicConsoleScript : MonoBehaviour
     [SerializeField] public ItemInfo test_info;
     public NetworkObject playerOriginal;
     public Texture2D icoTest;
-    private void Start()
+    private void Awake()
     {
+        Global.gameSavingManager = new GameSavingManager("new_world");
+        print("created");
         Instance = this;
         //discarded
 
-        var item = new ItemInstance();
+        /*var item = new ItemInstance();
         item.info = new ItemInfo
         {
             builderId = BuilderID.Def,
             discardedObject = playerOriginal.gameObject.GetPrefab(),
             handObject = null,
             ico = icoTest,
+            stack = 32,
             id = SIID.game_testitem_1,
             name = new TEXT { _text = "hello" },
         };
@@ -73,7 +76,8 @@ public class BasicConsoleScript : MonoBehaviour
         slot1.Swap(slot2);
 
         Global.gameSavingManager = new GameSavingManager("new_world");
-        GameSavingManager.Instance.save.LoadItemSector(0);
+
+        GameSavingManager.Instance.save.LoadItemSector(0);*/
         //for (int i = 32; i < 44; i++)
         //{
         //    items[i] = item;

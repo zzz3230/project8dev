@@ -9,26 +9,45 @@ public class PlayerInventoryManager : MonoBehaviour
 
     ItemsManagerPointer[] itemsPointers;
 
-    void CallUpdate()
+    PlayerHUD_UI_Manager uiManager;
+
+    SlotManager[] slotsMangers;
+
+    public void SetPointers(ItemsManagerPointer[] pointers)
     {
-        updateInventory();
+        itemsPointers = pointers;
     }
 
-    public void MoveItemInInventory(SlotManager source, SlotManager destination, int count = 1)
+    public void Init(PlayerHUD_UI_Manager uiManger, ItemsManagerPointer[] ptrs, SlotManager[] slots)
     {
-        if (count == 0)
-            return;
+        this.uiManager = uiManger;
+        this.itemsPointers = ptrs;
+        this.slotsMangers = slots;
+    }
 
-        if(count == 1)
+
+    void CallUpdate()
+    {
+        //updateInventory();
+        var test = ItemsManager._loadedSectors;
+
+        for (int i = 0; i < uiManager.slotsCount; i++)
         {
-            (destination.localIndex, source.localIndex) = (source.localIndex, destination.localIndex);
+            slotsMangers[i].ViewUpdate();
         }
+    }
 
-        itemsPointer[destination.localIndex].count += count;
-        itemsPointer[source.localIndex].count -= count;
+    public void MoveItem(int sourceSlotIndex, int destinationSlotIndex, int count = 1)
+    {
+        MoveItem(slotsMangers[sourceSlotIndex], slotsMangers[destinationSlotIndex], count);
+    }
 
-        if(itemsPointer[source.localIndex].count <= 0)
-            itemsPointer.Remove(source.localIndex);
+    public void MoveItem(SlotManager source, SlotManager destination, int count = 1)
+    {
+        if (count <= 0)
+            return;
+         
+        SlotManager.MoveItems(source, destination, count);
 
         CallUpdate();
     }

@@ -100,6 +100,8 @@ public class WorldSavingManager
             public string id;
             public int count;
             public ItemMetadata metadata;
+
+            public static FR_ItemInstance empty { get => new FR_ItemInstance { count = 0, id = null, metadata = null }; } //;
         }
     }
     public const int ITEM_REGION_COUNT = 1024;
@@ -114,6 +116,9 @@ public class WorldSavingManager
         var data = File.ReadAllBytes(filePath);
 
         var fr = BytesToObject<FileRecordStructs.FR_ItemInstance[]>(data);
+
+        if (fr == null)
+            fr = Enumerable.Repeat(FileRecordStructs.FR_ItemInstance.empty, ITEM_REGION_COUNT).ToArray();
 
         var items = new ItemInstance[ITEM_REGION_COUNT];
         for(int i = 0; i < ITEM_REGION_COUNT; i++)
