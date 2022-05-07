@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Game/UI/StStyle.uss?fileID=7433441132597879392&amp;guid=d937c91a50d1b544c876c8d68d8af898&amp;type=3#StStyle" />
+    <PlayerInventoryUIManager name="inv">
+        <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Game/UI/Assets/fill.png?fileID=2800000&amp;guid=3969c472f25f1724d9395b94080370a7&amp;type=3#fill&apos;); -unity-background-image-tint-color: rgba(255, 255, 255, 0.45);">
+            <ui:VisualElement name="inv-slots-box" style="flex-wrap: wrap; margin-left: 61px; margin-right: 26px; margin-top: 26px; margin-bottom: 26px; text-shadow: 0 0 0 rgba(0, 0, 0, 255);" />
+        </ui:VisualElement>
+    </PlayerInventoryUIManager>
+</ui:UXML>

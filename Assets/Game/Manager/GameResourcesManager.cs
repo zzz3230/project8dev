@@ -48,6 +48,7 @@ public class GameResourcesManager : MonoBehaviour
 
     private void Awake()
     {
+        //print("Crated");
         Global.resourcesManager = this;
         //print("added");
     }

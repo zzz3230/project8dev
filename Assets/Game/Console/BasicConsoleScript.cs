@@ -5,6 +5,7 @@ using UnityEngine;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UNET;
 using System.Linq;
+using IronPython;
 
 public static class BasicConsole
 {
@@ -41,7 +42,7 @@ public class BasicConsoleScript : MonoBehaviour
     private void Awake()
     {
         Global.gameSavingManager = new GameSavingManager("new_world");
-        print("created");
+        //print("created");
         Instance = this;
         //discarded
 

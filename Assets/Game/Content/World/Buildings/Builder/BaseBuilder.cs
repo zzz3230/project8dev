@@ -6,7 +6,7 @@ public class BaseBuilder : MonoBehaviour
 {
     protected Quaternion _rotation = Quaternion.identity;
     public Quaternion rotation { get { return _rotation; } set { _rotation = value; } }
-    public virtual void BeginBuilding(NewBasePlayerScript playerScript, BaseBuildingPrefabClass originalPrefab) {  }
+    public virtual void BeginBuilding(NewBasePlayerScript playerScript, RuntimeBuildingInfoScript originalPrefab) {  }
     public virtual void EndBuilding() { }
     public virtual bool Place() { return false; }
 }
@@ -14,5 +14,5 @@ public class BaseBuilder : MonoBehaviour
 [System.Serializable]
 public enum BuilderID
 {
-    Base, Def
+    None, Base, Def
 }

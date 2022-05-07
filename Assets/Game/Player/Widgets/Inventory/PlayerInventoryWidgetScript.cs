@@ -7,26 +7,28 @@ public class PlayerInventoryWidgetScript : WidgetBehaviour
 {
     [SerializeField] GameObject _slotsPanel;
     public SlotWidgetScript slotWidgetOriginal;
-    public int slotsCount = 30;
+    public List<SlotWidgetScript> slotsWidgets = new List<SlotWidgetScript>();
+    NewBasePlayerScript playerScript;
+    public int slotsCount = 27;
 
-    void Start()
+    public void Init(NewBasePlayerScript player)
+    {
+        playerScript = player;
+    }
+
+    void Awake()
     {
         for (int i = 0; i < slotsCount; i++)
         {
             //Instantiate(slotWidgetOriginal).transform.SetParent(_slotsPanel.transform);
-            Utils.SpawnSlotWidget(slotWidgetOriginal, _slotsPanel, i);
+            slotsWidgets.Add(Utils.SpawnSlotWidget(slotWidgetOriginal, _slotsPanel, i));
         }
     }
 
-    public void Hide()
+    public SlotWidgetScript GetSlot(int i)
     {
-        gameObject.SetActive(false);
-    }
-    public void Show()
-    {
-        gameObject.SetActive(true);
-
-
+        //print(i);
+        return slotsWidgets[i];
     }
 
     public void SwitchVisible()

@@ -6,15 +6,17 @@ public class DefBuilder : BaseBuilder
 {
     NewBasePlayerScript _playerScript;
     bool _updating = false;
-    BaseBuildingPrefabClass _originalPrefab;
-    BaseBuildingPrefabClass _previewPrefab;
+    RuntimeBuildingInfoScript _originalPrefab;
+    RuntimeBuildingInfoScript _previewPrefab;
+
+    RuntimeBuildingInfoScript by;
 
     public Material validMat;
     public Material invalidMat;
     public string buildingLayerName = "BuildingPreview";
     public Layers buildingLayer = Layers.BuildingPreview;
 
-    public override void BeginBuilding(NewBasePlayerScript playerScript, BaseBuildingPrefabClass originalPrefab)
+    public override void BeginBuilding(NewBasePlayerScript playerScript, RuntimeBuildingInfoScript originalPrefab)
     {
         base.BeginBuilding(playerScript, originalPrefab);
         _playerScript = playerScript;
@@ -26,6 +28,34 @@ public class DefBuilder : BaseBuilder
         Utils.SetMaterial(_previewPrefab.gameObject, validMat);
 
         Utils.SetLayerOnAll(_previewPrefab.gameObject, Utils.GetLayer(buildingLayer));
+    }
+    public override void EndBuilding()
+    {
+        base.EndBuilding();
+        if (!_updating)
+            return;
+
+        _updating = false;
+        _originalPrefab = null;
+        Destroy(_previewPrefab.gameObject);
+    }
+    public override bool Place()
+    {
+        base.Place();
+        var obj = Instantiate(_originalPrefab, _previewPrefab.transform.position, _rotation);
+        if (by != null)
+        {
+            if (by.group == null)
+                by.group = BasicBuildingGroup.Create();
+
+            ((BasicBuildingGroup)by.group).Add(obj, by, default);
+        }
+        else
+            obj.group = BasicBuildingGroup.Create();
+
+        _playerScript.DecrementCountInHand();
+
+        return true;
     }
 
     private void Update()
@@ -41,12 +71,15 @@ public class DefBuilder : BaseBuilder
         //print(ray.origin + " : " + hit.point);
         if (hit.collider != null)
         {
+            _previewPrefab.gameObject.SetActive(true);
+
             Vector3 previewPos = Vector3.one;
             Quaternion previewRot = Quaternion.identity;
-            BaseBuildingPrefabClass by = null;
+            //RuntimeBuildingInfoScript by = null;
 
-            if (hit.collider.gameObject.transform.parent != null && hit.collider.gameObject.transform.parent.TryGetComponent<BaseBuildingPrefabClass>(out var b))
+            if (!Input.GetKey(KeyCode.LeftControl) && hit.collider.gameObject.transform.parent != null && hit.collider.gameObject.transform.parent.TryGetComponent<RuntimeBuildingInfoScript>(out var b))
             {
+                _previewPrefab.gameObject.SetActive(true);
                 //print(hit.collider.gameObject.transform.parent.name);
                 if (Input.GetKeyDown(KeyCode.Y))
                 {
@@ -63,7 +96,14 @@ public class DefBuilder : BaseBuilder
             }
             else
             {
-                previewPos = hit.point;
+                if(hit.distance < 10)
+                {
+                    
+                    previewPos = hit.point;
+                }
+                else
+                {
+                }
             }
 
 
@@ -84,5 +124,7 @@ public class DefBuilder : BaseBuilder
                     obj.group = BasicBuildingGroup.Create();
             }
         }
+        else
+            _previewPrefab.gameObject.SetActive(false);
     }
 }

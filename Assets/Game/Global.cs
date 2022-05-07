@@ -3,7 +3,13 @@ using OldNetwork;
 
 public static class Global {
 
-    
+    public static GameManagerScript gameManager
+    {
+        get { return _gameManager; }
+        set { if (_gameManager == null) _gameManager = value; }
+    }
+    static GameManagerScript _gameManager;
+
     public static GameSavingManager gameSavingManager
     {
         get { return _gameSavingManager; }

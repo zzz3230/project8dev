@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Game/UI/StStyle.uss?fileID=7433441132597879392&amp;guid=d937c91a50d1b544c876c8d68d8af898&amp;type=3#StStyle" />
+    <ConsoleUIManager name="con" style="height: 100%; width: 100%;">
+        <ui:VisualElement style="height: 100%; width: 100%; justify-content: flex-end; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 23px; padding-right: 23px; padding-top: 23px; padding-bottom: 23px;">
+            <ui:ScrollView>
+                <ui:Label text="console out \n world" display-tooltip-when-elided="true" name="console-out-label" style="font-size: 22px; -unity-font-style: bold; color: rgb(229, 229, 229); background-image: none; -unity-background-image-tint-color: rgba(0, 0, 0, 0.26); -unity-background-scale-mode: stretch-to-fill; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; white-space: normal; text-shadow: 0 0 1px rgba(55, 55, 55, 255); -unity-text-outline-width: 0; -unity-text-outline-color: rgba(58, 58, 58, 255);" />
+                <ui:TextField value="filler text" text="filler text" name="command-label" is-delayed="false" class="st-textfield" style="width: 0; font-size: 18px; height: 0; color: rgb(236, 236, 236); -unity-text-outline-color: rgb(0, 0, 0); background-color: rgb(233, 233, 233);" />
+            </ui:ScrollView>
+            <ui:VisualElement style="bottom: auto; height: auto; flex-direction: row; justify-content: space-between;">
+                <StTextField name="command-field" class="st-textfield" style="width: 80%; height: 56px; color: rgba(236, 236, 236, 255); -unity-font-style: normal; font-size: 18px; -unity-text-align: upper-left; -unity-font: url(&apos;project://database/Assets/Plugins/Lean/Common/Examples/Fonts/VarelaRound-Regular.ttf?fileID=12800000&amp;guid=d54323c94c164de478170d5e7d0273be&amp;type=3#VarelaRound-Regular&apos;); -unity-background-image-tint-color: rgba(0, 0, 0, 255); background-image: none;" />
+                <ui:Button text="Enter" display-tooltip-when-elided="true" name="send-btn" class="st-menu-btn" style="-unity-text-align: middle-center; align-items: center; justify-content: center; flex-direction: column; flex-wrap: nowrap; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; width: 168px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ConsoleUIManager>
+</ui:UXML>

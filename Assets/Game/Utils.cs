@@ -114,6 +114,20 @@ public enum Layers
 
 public static class Utils
 {
+    //public static MouseButton CovertMouseButtonEnum(UnityEngine.EventSystems)
+    public static void AppendX(this Transform t, float val)
+    {
+        t.position = new Vector3(t.position.x + val, t.position.y, t.position.z);
+    }
+    public static void AppendY(this Transform t, float val)
+    {
+        t.position = new Vector3(t.position.x, t.position.y + val, t.position.z);
+    }
+    public static void AppendZ(this Transform t, float val)
+    {
+        t.position = new Vector3(t.position.x, t.position.y, t.position.z + val);
+    }
+
     public static T DeepCopy<T>(T other)
     {
         using MemoryStream ms = new MemoryStream();

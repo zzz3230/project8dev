@@ -99,7 +99,7 @@ public class WorldSavingManager
         {
             public string id;
             public int count;
-            public ItemMetadata metadata;
+            public UnitMetadata metadata;
 
             public static FR_ItemInstance empty { get => new FR_ItemInstance { count = 0, id = null, metadata = null }; } //;
         }

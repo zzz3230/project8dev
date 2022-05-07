@@ -34,7 +34,9 @@ public static class ItemsManagerPointerUtils
             return;
         }
 
+        int bCount = b[0] != null ? b[0].count : 0;
         var rest = a[0].count - count;
+
         if(rest < 0)
         {
             Log.Error($"rest in slot a less than zero", "itemsmanagerpointerutils-move");
@@ -43,7 +45,10 @@ public static class ItemsManagerPointerUtils
         
         if(rest == 0)
         {
-            SetFrom(b, a);
+            Swap(b, a); 
+
+            b[0].count = count + bCount;
+
             a.Remove(0);
             a[0].empty = true;
         }
@@ -51,7 +56,7 @@ public static class ItemsManagerPointerUtils
         {
             CopyTo(a, b);
             a[0].count = rest;
-            b[0].count = count;
+            b[0].count = count + bCount;
             b[0].empty = false;
         }
     }
@@ -188,3 +193,4 @@ public static class ItemsManager
         _loadedSectors[sector][index] = item;
     }
 }
+

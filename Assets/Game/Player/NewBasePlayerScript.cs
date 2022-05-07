@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 public enum Move { Moveable, NotMoveable }
+public enum GameWidget { Hud, Inventory, Menu, Console }
 
 public class NewBasePlayerScript : Character
 {
@@ -39,7 +42,6 @@ public class NewBasePlayerScript : Character
     #endregion
 
     Vector3 velocity = Vector3.zero;
-    //float movementSoundFXLength = 0f;
 
     [Header("References")]
     public CharacterController controller;
@@ -61,99 +63,177 @@ public class NewBasePlayerScript : Character
     Vector2 _cameraRotation;
     int _currentSlot = 1;
 
-    //public PlayerHUDWidgetScript playerHUDOriginal;
-    //public PlayerHUDWidgetScript playerHUD;
+    public void DecrementCountInHand(int c = 1)
+    {
+        var item = inventoryManager.GetSlot(_currentSlot).itemPointer[0];
+        item.count -= c;
+        
+        //Log.Ms(item);
 
-    //public PlayerInventoryWidgetScript playerInventoryWidgetOriginal;
-    //public PlayerInventoryWidgetScript playerInv;
+        if(item.count <= 0)
+            item.empty = true;
 
-    public PlayerHUD_UI_Manager hudUIManager;
+        inventoryManager.GetSlot(_currentSlot).ViewUpdate();
+        UpdateHUD();
+    }
+
+    /*public PlayerHUD_UI_Manager hudUIManager;
     public UIManager uiManager;
+    public UIManager uiInventory;
+    
+    public PlayerInventoryUIManager inventoryUIManager;
+
+    public UIManager uiPauseMenu;
+    public PauseMenuUIManager pauseMenuUIManager;
+
+    public UIManager uiConsoleMenu;
+    public PauseMenuUIManager consoleUIManager;*/
     public PlayerInventoryManager inventoryManager;
 
-    public DefBuilder defBuilderOriginal;
-    public DefBuilder defBuilder;
+    public PlayerHUDWidgetScript playerHUDWidgetScript;
+    public PlayerInventoryWidgetScript playerInventoryWidgetScript;
+    public PauseMenuWidgetScript pauseMenuWidgetScript;
+    public ConsoleWidgetScript consoleWidgetScript;
+
+    public HandItemManager handItemManager;
+
 
     //public float playerSpeed = 200;
     public bool isInputMouse = true;
 
-    public int slotsCount = 9;
+    public int slotsCount = 27;
 
     NetworkVariable<Vector3> serverPosition = new NetworkVariable<Vector3>();
-
-    //[Header("Sound FXs")]
-    //public AudioClipsData walkClipsData;
-    //public AudioClipsData runClipsData;
-    //public AudioClipsData landClipsData;
-    //public AudioClipsData jumpClipsData;
 
     [Header("Animator Settings")]
     [Range(.1f, 5f)] public float animatorMovementSpeed = 1f;
 
+    GameWidget focusWidget =  GameWidget.Hud;
+
+    void ChangeGameState(GameState newState)
+    {
+        if (newState == GameState.Playing)
+        {
+            HidePauseMenu();
+        
+        } else if(newState == GameState.Paused) {
+
+            ShowPauseMenu();
+        }
+    }
+
     public void Start()
     {
-        //if (!IsOwner) 
-        //    return;
+        //Debug.LogError(System.IO.Directory.GetCurrentDirectory());
+        //Debug.LogError(System.IO.Directory.GetCurrentDirectory());
+        //Debug.LogError(System.IO.Directory.GetCurrentDirectory());
+        //handItemManager.defBuilderOriginal = d
 
-        print(gameObject.GetUUID());
+        //pauseMenuUIManager = uiPauseMenu.Q<PauseMenuUIManager>("menu");
+        RefHub.playerScript = this;
+        Global.gameManager.gameStateChanged = ChangeGameState;
+
+        ConsoleWidgetScript.instance.AddClassInstance(this, "player");
+
+        playerInventoryWidgetScript.Init(this);
+
+        //print(gameObject.GetUUID());
 
         AttachCommands();
 
         if (animator)
             animator.SetFloat("MovementSpeed", animatorMovementSpeed);
 
-        //playerHUD = Utils.SpawnWidget(playerHUDOriginal);
-        //playerHUD.slotsCount = slotsCount;
+        //hudUIManager = uiManager.Q<PlayerHUD_UI_Manager>("hud");
+        //inventoryUIManager = uiInventory.Q<PlayerInventoryUIManager>("inv");
 
-        //playerInv = Utils.SpawnWidget(playerInventoryWidgetOriginal);
-        //playerInv.Hide();
+        ChangeGameState(GameState.Playing);
+        HideInventory();
+        HidePauseMenu();
+        HideConsoleWidget();
 
-        hudUIManager = uiManager.Q<PlayerHUD_UI_Manager>("hud");
+        //inventoryUIManager.loaded += (obj) =>
+        //{
 
-        //System.Threading.Thread.Sleep(1000);
-        //System.Threading.Tasks.Task.Delay(10000);
+        SlotManager[] slots = new SlotManager[slotsCount];
+        for (int i = 0; i < slots.Length; i++)
+        {
+            var itemPointer = ItemsManager.Allocate(1);
+            var widget = playerInventoryWidgetScript.GetSlot(i);
+                
+            slots[i] = new SlotManager
+            {
+                itemPointer = itemPointer,
+                widget = widget,
+                playerScript = this
+            };
+            //print(itemPointer);
+            widget.manager = slots[i];
+        }
+
+        inventoryManager.Init(
+            playerInventoryWidgetScript,
+            slots.Select(s => s.itemPointer).ToArray(),
+            slots
+            );
+
+        slots[1].itemPointer[0].info = BasicConsoleScript.Instance.debugItems[0];
+        slots[1].itemPointer[0].count = 23;
+        slots[1].itemPointer[0].empty = false;
+        slots[1].itemPointer[0].metadata = new UnitMetadata();
+        slots[1].itemPointer[0].metadata.durability = 50;
+        slots[1].itemPointer[0].metadata.maxDurability = 150;
+
+
+        slots[6].itemPointer[0].info = BasicConsoleScript.Instance.debugItems[1];
+        slots[6].itemPointer[0].count = 23;
+        slots[6].itemPointer[0].empty = false;
+
+
+        SlotManager[] slots2 = new SlotManager[9];
+        for (int i = 0; i < slots2.Length; i++)
+        {
+            //var itemPointer = ItemsManager.Allocate(1);
+            //print(i);
+            var visualElement = playerHUDWidgetScript.GetSlot(i);
+            
+            slots2[i] = inventoryManager.GetSlot(i).NewShadow(visualElement);
+
+        }
+
+        foreach (var s in slots)
+        {
+            s.ViewUpdate();
+            // Log.Ms(s.itemPointer.offset);
+        }
+
+
+        inventoryManager.MoveItem(slots[1], slots[2], 9);
+
+
+        //hudUIManager.loaded += (obj) =>
+        //{SlotManager[] 
+        
+                //inventoryManager.Init(
+                 //   hudUIManager, 
+                 //   slots.Select(s => s.itemPointer).ToArray(),
+                 //   slots
+                 //   );
+
+            //}; 
+            
+            //inventoryUIManager.style.display = UnityEngine.UIElements.DisplayStyle.None;
+        //};
         
 
-        hudUIManager.loaded += (obj) =>
-        {
-            SlotManager[] slots = new SlotManager[slotsCount];
-            for (int i = 0; i < slots.Length; i++)
-            {
-                var itemPointer = ItemsManager.Allocate(1);
-                var visualElement = hudUIManager.GetSlot(i);
-
-                slots[i] = new SlotManager
-                {
-                    itemPointer = itemPointer,
-                    visualElement = visualElement,
-                };
-                //print(slotsCount);
-            }
-
-            inventoryManager.Init(
-                hudUIManager, 
-                slots.Select(s => s.itemPointer).ToArray(),
-                slots
-                );
-
-            //inventoryManager.SetPointers(pointers);
-
-            slots[1].itemPointer[0].info = BasicConsoleScript.Instance.debugItems[0];
-            slots[1].itemPointer[0].count = 23;
-            slots[1].itemPointer[0].empty = false;
-
-            inventoryManager.MoveItem(slots[1], slots[2], 9);
-        };
-
-
-        defBuilder = Utils.SpawnBuilder(defBuilderOriginal);
+        
 
         LockMouse();
     }
 
     void AttachCommands()
     {
-        BasicConsole.AttachCom("beginbuild", () => defBuilder.BeginBuilding(this, pref));
+        //BasicConsole.AttachCom("beginbuild", () => defBuilder.BeginBuilding(this, pref));
         BasicConsole.AttachCom("log_clients", () =>
         {
             var res = "";
@@ -167,49 +247,141 @@ public class NewBasePlayerScript : Character
         });
     }
 
+    void HideInventory()
+    {
+        playerInventoryWidgetScript.Hide();
+        focusWidget = GameWidget.Hud;
+        LockMouse();
+    }
+    void ShowInventory()
+    {
+        playerInventoryWidgetScript.Show();
+        focusWidget = GameWidget.Inventory;
+        UnlockMouse();
+    }
+    void ShowPauseMenu()
+    {
+        HideFocuseWidget();
+        //if(focusWidget == GameWidget.Inventory)
+        //    HideInventory();
+        //else
+        //{
+            pauseMenuWidgetScript.Show();
+            focusWidget = GameWidget.Menu;
+            UnlockMouse();
+        //}
+    }
+    void HidePauseMenu()
+    {
+        pauseMenuWidgetScript.Hide();
+        focusWidget = GameWidget.Hud;
+        LockMouse();
+    }
+    void HideConsoleWidget()
+    {
+        consoleWidgetScript.Hide();
+        focusWidget = GameWidget.Hud;
+        LockMouse();
+    }
+    void ShowConsoleWidget()
+    {
+        consoleWidgetScript.Show();
+        focusWidget = GameWidget.Console;
+        UnlockMouse();
+    }
+    void HideFocuseWidget()
+    {
+        StInput.isTextFieldEditing = false;
+        switch (focusWidget)
+        {
+            case GameWidget.Hud:
+                return;
+                break;
+            case GameWidget.Inventory:
+                HideInventory();
+                break;
+            case GameWidget.Menu:
+                HidePauseMenu();
+                break;
+            case GameWidget.Console:
+                HideConsoleWidget();
+                break;
+        }
+    }
+    void ApplyItemUse(MouseButton btn)
+    {
+        handItemManager.UseItem(btn);
+    }
     int test_tomove = 8;
     int test_index = 2;
     public void Update()
     {
-        //if(Unity.Netcode.NetworkManager.Singleton.ConnectedClients.Count > 1)
-        //    print(Unity.Netcode.NetworkManager.Singleton.ConnectedClients[1].PlayerObject.name);
-
 
         base.Update();
-
-        //if (IsServer)
-        //    serverPosition.Value = transform.position;
-
-       // if (!IsOwner)
-       //     return;
-
-
-        //transform.position = serverPosition.Value;
 
         Gravity();
 
         if (air == Move.Moveable || IsGrounded)
             Movement();
 
-        if (Input.GetKeyDown(KeyCode.T))
+        /*if (Input.GetKeyDown(KeyCode.T))
         {
             inventoryManager.MoveItem(test_index, ++test_index, test_tomove);
             print("mving: " + test_tomove);
             test_tomove -= 2;
+        }*/
+
+        /*var prt = "";
+        for (int i = 0; i < 27; i++)
+        {
+            prt += inventoryManager.GetSlot(i).itemPointer[0]?.count + "";
+        }
+        print(prt);*/
+        if(Input.GetMouseButtonDown(0))
+            ApplyItemUse(MouseButton.Left);
+        else if (Input.GetMouseButtonDown(1))
+            ApplyItemUse(MouseButton.Right);
+        else if (Input.GetMouseButtonDown(2))
+            ApplyItemUse(MouseButton.Middle);
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (focusWidget == GameWidget.Inventory || focusWidget == GameWidget.Hud)
+                ShowPauseMenu();
+            else
+                //HidePauseMenu();
+                HideFocuseWidget();
         }
 
-        if (Input.GetKeyDown(KeyCode.N))
+        if (StInput.GetKeyDown(KeyCode.T))
+        {
+            ShowConsoleWidget();
+        }
+
+        if (StInput.GetKeyDown(KeyCode.I))
+        {
+            if(focusWidget == GameWidget.Hud)
+            {
+                ShowInventory();
+            }
+            else if(focusWidget == GameWidget.Inventory)
+            {
+                HideInventory();
+            }
+        }
+
+
+        if (StInput.GetKeyDown(KeyCode.N))
         {
             UnlockMouse();
         }
-        else if (Input.GetKeyDown(KeyCode.L))
+        else if (StInput.GetKeyDown(KeyCode.L))
         {
             LockMouse();
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (StInput.GetKeyDown(KeyCode.E))
         {
-            //playerInv.SwitchVisible();
             SwitchMouseLocking();
         }
 
@@ -217,7 +389,6 @@ public class NewBasePlayerScript : Character
 
         if (isInputMouse)
         {
-            //print("cam move");
             var mouse = new Vector2(-Input.GetAxisRaw("Mouse Y"), Input.GetAxisRaw("Mouse X"));
 
             _cameraRotation.x += mouse.x;
@@ -235,22 +406,50 @@ public class NewBasePlayerScript : Character
         float mw = Input.GetAxis("Mouse ScrollWheel");
         if (Input.GetKey(KeyCode.LeftControl))
         {
-            var rot = defBuilder.rotation.eulerAngles;
-            rot.y += mw * 15;
-            defBuilder.rotation = Quaternion.Euler(rot);
+            handItemManager.AppendBuilderRotation(mw * 90);
         }
         else
         {
-            _currentSlot = (int)Mathf.Clamp(_currentSlot + mw * -10, 0, slotsCount - 1);
-            hudUIManager.SetÑurrentSlot(_currentSlot);
+            var newSlot = (int)Mathf.Clamp(_currentSlot + mw * -10, 0, 9 - 1);
+            if(_currentSlot != newSlot)
+            {
+                _currentSlot = newSlot;
+                HUDSlotChanged();
+
+                _currentSlot = newSlot;
+
+                playerHUDWidgetScript.SetÑurrentSlot(_currentSlot);
+            }
+            
         }
         #endregion
     }
 
+    public void UpdateHUDView()
+    {
+        for (int i = 0; i < playerHUDWidgetScript.slotsCount; i++)
+        {
+            //playerInventoryWidgetScript.GetSlot(i).
+            inventoryManager.GetSlot(i).ViewUpdate();
+        }
+    }
+    public void UpdateItemDurabilityInHUD(bool onlyInHand)
+    {
+        if (onlyInHand)
+            inventoryManager.GetSlot(_currentSlot).ViewUpdateDurability();
+    }
+    public void UpdateHUD()
+    {
+        HUDSlotChanged();
+    }
+    void HUDSlotChanged()
+    {
+        handItemManager.SetCurrentInHandItem(inventoryManager.GetSlot(_currentSlot).itemPointer);
+        //print(inventoryManager.GetSlot(_currentSlot).itemPointer[0]?.ToString());
+    }
+
     public void FixedUpdate()
     {
-        //if(isServer)
-        //    base.FixedUpdate();
     }
    
     void SwitchMouseLocking()
@@ -315,7 +514,7 @@ public class NewBasePlayerScript : Character
         //    S_Gravity(Input.GetButtonDown("Jump"));
 
 
-        var jump = Input.GetButtonDown("Jump");
+        var jump = StInput.GetButtonDown("Jump");
         //if (jump) print("j");
         Gravity_ServerRpc_(jump);
 
@@ -335,8 +534,8 @@ public class NewBasePlayerScript : Character
     {
         if (Moveable)
         {
-            var x = Input.GetAxis("Horizontal");
-            var y = Input.GetAxis("Vertical");
+            var x = StInput.GetAxis("Horizontal");
+            var y = StInput.GetAxis("Vertical");
 
             //if(!IsServer)
             //CallOnServer(nameof(S_Movement), false, x, y);
@@ -359,12 +558,5 @@ public class NewBasePlayerScript : Character
     }
 
 
-    [SerializeField] BaseBuildingPrefabClass pref;
-    //private void OnGUI()
-    //{
-    //    if (GUILayout.Button("_______________________________________________Start"))
-    //    {
-    //        defBuilder.BeginBuilding(this, pref);
-    //    }
-    //}
+    [SerializeField] public BaseBuildingPrefabClass pref;
 }

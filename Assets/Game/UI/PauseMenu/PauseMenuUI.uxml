@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Game/UI/StStyle.uss?fileID=7433441132597879392&amp;guid=d937c91a50d1b544c876c8d68d8af898&amp;type=3#StStyle" />
+    <PauseMenuUIManager name="menu" style="width: 100%; height: 100%;">
+        <ui:VisualElement style="background-color: rgba(0, 0, 0, 0.69); background-image: url(&apos;project://database/Assets/Game/UI/Assets/fill.png?fileID=2800000&amp;guid=3969c472f25f1724d9395b94080370a7&amp;type=3#fill&apos;); -unity-background-image-tint-color: rgba(41, 41, 41, 0.69); justify-content: space-around; height: 100%; width: 100%;">
+            <ui:Label text="PAUSE" display-tooltip-when-elided="true" style="font-size: 140px; color: rgb(202, 202, 202); -unity-font: url(&apos;project://database/Assets/Plugins/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&amp;guid=e3265ab4bf004d28a9537516768c1c75&amp;type=3#LiberationSans&apos;); -unity-text-align: upper-center;" />
+            <ui:VisualElement style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 24px; padding-right: 24px; padding-top: 24px; padding-bottom: 24px; width: 25%; left: 5%;">
+                <ui:Button text="Continue" display-tooltip-when-elided="true" name="btn-continue" class="st-menu-btn" />
+                <ui:Button text="Settings" display-tooltip-when-elided="true" name="btn-settings" class="st-menu-btn" />
+                <ui:Button text="Exit" display-tooltip-when-elided="true" name="btn-exit" class="st-menu-btn" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </PauseMenuUIManager>
+</ui:UXML>

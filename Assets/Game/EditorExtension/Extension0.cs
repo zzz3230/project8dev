@@ -170,6 +170,24 @@ public class UI : MonoBehaviour
         Instantiate(text);
     }
 
+    [MenuItem("Assets/Create/Py file", false, 1)]
+    private static void CreateNewAsset()
+    {
+        ProjectWindowUtil.CreateAssetWithContent(
+            "pycode.py",
+            @"
+from game import *
+from game_funcs import *
+
+class NewClass():
+    def start(self):
+        pass
+
+def export():
+    return NewClass
+");
+    }
+
 }
 
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,8 +13,8 @@ public class PlayerHUDWidgetScript : WidgetBehaviour
     [SerializeField] GameObject _slotsPanel;
 
 
-    public int slotsCount = 10;
-    private void Start()
+    public int slotsCount = 9;
+    private void Awake()
     {
         for (int i = 0; i < slotsCount; i++)
         {
@@ -53,5 +54,10 @@ public class PlayerHUDWidgetScript : WidgetBehaviour
     public void UpdateSlots()
     {
 
+    }
+
+    internal SlotWidgetScript GetSlot(int i)
+    {
+        return _slots[i];
     }
 }

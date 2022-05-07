@@ -9,30 +9,36 @@ public class PlayerInventoryManager : MonoBehaviour
 
     ItemsManagerPointer[] itemsPointers;
 
-    PlayerHUD_UI_Manager uiManager;
+    PlayerInventoryWidgetScript inventoryScript;
 
     SlotManager[] slotsMangers;
 
-    public void SetPointers(ItemsManagerPointer[] pointers)
-    {
-        itemsPointers = pointers;
-    }
+    //public void SetPointers(ItemsManagerPointer[] pointers)
+    //{
+    //    itemsPointers = pointers;
+    //}
 
-    public void Init(PlayerHUD_UI_Manager uiManger, ItemsManagerPointer[] ptrs, SlotManager[] slots)
+    public void Init(PlayerInventoryWidgetScript inventoryScript, ItemsManagerPointer[] ptrs, SlotManager[] slots)
     {
-        this.uiManager = uiManger;
+        this.inventoryScript = inventoryScript;
         this.itemsPointers = ptrs;
         this.slotsMangers = slots;
+    }
+
+    public SlotManager GetSlot(int index)
+    {
+        return slotsMangers[index];
     }
 
 
     void CallUpdate()
     {
         //updateInventory();
-        var test = ItemsManager._loadedSectors;
+        //var test = ItemsManager._loadedSectors;
 
-        for (int i = 0; i < uiManager.slotsCount; i++)
+        for (int i = 0; i < inventoryScript.slotsCount; i++)
         {
+            //print(i);
             slotsMangers[i].ViewUpdate();
         }
     }

@@ -6,11 +6,42 @@ using System.Text;
 using System;
 using OldNetwork;
 
+public enum GameState
+{
+    Playing,
+    Paused,
+    MainMenu
+}
+
 public class GameManagerScript : MonoBehaviour
 {
     [SerializeField] public List<GameUnitInfo> gameUnitInfos = new List<GameUnitInfo> { };
 
-    public BasePlayerScript playerScript;
+    public GameState gameState { get; private set; }
+    public Action<GameState> gameStateChanged = (x) => { };
+
+    /// <summary>
+    /// Change Playing and Paused state
+    /// </summary>
+    /// <param name="newGameState"></param>
+    public void ChangeGameState(GameState newGameState)
+    {
+        var old = gameState;
+        gameState = newGameState;
+
+        if (newGameState != old)
+            gameStateChanged?.Invoke(gameState);
+    }
+
+
+    private void Awake()
+    {
+        Global.gameManager = this;
+        //print(Global.gameManager);
+    }
+
+
+    /*public BasePlayerScript playerScript;
 
     bool isServer;
     Host host;
@@ -170,7 +201,7 @@ public class GameManagerScript : MonoBehaviour
         Screen.SetResolution(640, 480, FullScreenMode.Windowed, 60);
 
         //Invoke("Init", 0f);
-        */
+        *9900/
         
 
     }
@@ -289,7 +320,7 @@ public class GameManagerScript : MonoBehaviour
         }
 
         
-    }
+    }*/
 
-    
+
 }
