@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class PlayerHUDWidgetScript : WidgetBehaviour
 {
@@ -30,11 +26,11 @@ public class PlayerHUDWidgetScript : WidgetBehaviour
         _slots.ForEach((x) => x.selected = false);
         //print($"i={index}; max={_slots.Count}");
         _slots[index].selected = true;
-        UIDocument x;
+        //UIDocument x;
     }
 
     public bool visibleState { get { return gameObject.activeSelf; } }
-
+    /*
     public void Hide()
     {
         gameObject.SetActive(false);
@@ -43,7 +39,7 @@ public class PlayerHUDWidgetScript : WidgetBehaviour
     {
         gameObject.SetActive(true);
     }
-
+    */
     public void SwitchVisible()
     {
         gameObject.SetActive(!gameObject.activeSelf);

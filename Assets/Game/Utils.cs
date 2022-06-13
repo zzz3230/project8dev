@@ -2,15 +2,14 @@
 #define debug
 #endif
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.InteropServices;
-using System;
-using UnityEditor;
 using OldNetwork;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
+using UnityEditor;
+using UnityEngine;
 
 public static class RaycastHitX
 {
@@ -84,6 +83,15 @@ public class ReadOnlyDrawer : PropertyDrawer
         GUI.enabled = true;
     }
 }
+/*
+[CustomPropertyDrawer(typeof(Action))]
+public class ActionDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        if(GUILayout.Button(""))
+    }
+}*/
 #endif
 
 public enum DamageType
@@ -99,9 +107,9 @@ public struct DamageFactor
         this.factor = factor;
     }
 
-//#if UNITY_EDITOR
+    //#if UNITY_EDITOR
     [ReadOnly]
-//#endif
+    //#endif
     public DamageType type;
     public float factor;
 }
@@ -109,11 +117,37 @@ public struct DamageFactor
 [Flags]
 public enum Layers
 {
-    BuildingPreview = 1
+    BuildingPreview = 6,
+    VirtualDiscardedItem = 9,
 }
 
 public static class Utils
 {
+    static public string GetSystemInfo()
+    {
+        string str = "<b>SYSTEM INFO</b>";
+
+#if UNITY_IOS
+     str += "\n[iphone generation]"+UnityEngine.iOS.Device.generation.ToString();
+#endif
+
+#if UNITY_ANDROID
+     str += "\n[system info]" + SystemInfo.deviceModel;
+#endif
+        str += "\nOS: " + SystemInfo.operatingSystem;
+        str += "\nMemory: " + SystemInfo.systemMemorySize;
+        str += "\nGraphic device: " + SystemInfo.graphicsDeviceName + " (version " + SystemInfo.graphicsDeviceVersion + ")";
+        str += "\nGraphic memory: " + SystemInfo.graphicsMemorySize;
+
+        str += "\nPlatform: " + Application.platform;
+        str += "\nScreen size: " + Screen.width + " x " + Screen.height;
+
+        return str;
+    }
+
+
+
+
     //public static MouseButton CovertMouseButtonEnum(UnityEngine.EventSystems)
     public static void AppendX(this Transform t, float val)
     {
@@ -158,7 +192,7 @@ public static class Utils
 
     public static void Assert(bool val, string msg = "")
     {
-        if(!val)
+        if (!val)
             throw new Exception("[assertion failed] " + msg);
     }
 
@@ -194,8 +228,8 @@ public static class Utils
 
     public static /*void*/int GetLayerMask(Layers layer)
     {
-        
-        List<string> names = new List<string> { }; 
+
+        List<string> names = new List<string> { };
         var layers = Enum.GetValues(typeof(Layers));
         foreach (Layers l in layers)
         {
@@ -237,13 +271,21 @@ public static class Utils
         return GameObject.Instantiate<T>(widget);
     }
 
-    public static SlotWidgetScript SpawnSlotWidget(SlotWidgetScript original, GameObject parent, int index = -1)
+    public static SlotManager SpawnSlotWidget(SlotWidgetScript original, GameObject parent, ItemsManagerPointer ptr, int index = -1)
     {
-        var slot = SpawnWidget(original);
+        /*var slot = SpawnWidget(original);
         slot.transform.SetParent(parent.transform);
         slot.transform.localScale = Vector3.one;
         slot.index = index;
-        return slot;
+        return slot;*/
+
+        var m = new SlotManager();
+        m.widget = SpawnWidget(original);
+        m.widget.transform.SetParent(parent.transform);
+        m.itemPointer = ptr;
+        if (ptr is not null)
+            m.ViewUpdate();
+        return m;
     }
 
     /// <summary>
@@ -252,7 +294,7 @@ public static class Utils
     /// <param name="prefab"></param>
     public static NetworkMonoBehaviour Spawn(NetworkPrefab prefab, ClientId owner = null)
     {
-        
+
         ThrowErrorIf(NetworkManager.NetworkState.Client);
         var nmb = GameObject.Instantiate(prefab.gameObject).GetComponent<NetworkMonoBehaviour>();
         nmb.owner = owner;
@@ -261,24 +303,24 @@ public static class Utils
         return nmb;
     }
     static HashSet<ulong> _reged = new HashSet<ulong> { 0 };
-    public static ulong RandomUlong()
+    public static ulong NextUlong()
     {
         ulong val;
-        do
-        {
-            byte[] bytes = new byte[8];
-            _random.NextBytes(bytes);
-            val = BitConverter.ToUInt64(bytes, 0);
-        }
-        while (_reged.Contains(val));
+        //do
+        //{
+        byte[] bytes = new byte[8];
+        _random.NextBytes(bytes);
+        val = BitConverter.ToUInt64(bytes, 0);
+        //}
+        //while (_reged.Contains(val));
         return val;
     }
 
-    public static byte [] StructureToByteArray(object obj)
+    public static byte[] StructureToByteArray(object obj)
     {
         int len = Marshal.SizeOf(obj);
 
-        byte [] arr = new byte[len];
+        byte[] arr = new byte[len];
 
         IntPtr ptr = Marshal.AllocHGlobal(len);
 
@@ -291,7 +333,7 @@ public static class Utils
         return arr;
     }
 
-    public static void ByteArrayToStructure(byte [] bytearray, ref object obj)
+    public static void ByteArrayToStructure(byte[] bytearray, ref object obj)
     {
         int len = Marshal.SizeOf(obj);
 
@@ -321,13 +363,15 @@ public static class Utils
         }
     }
 
-    public static void ThrowErrorIf(NetworkManager.NetworkState side, string m = ""){
-        if(Global.networkManager.state == side){
-            var ex = $"Bad side: {side}" +(m != "" ?  " | " + m : "");
+    public static void ThrowErrorIf(NetworkManager.NetworkState side, string m = "")
+    {
+        if (Global.networkManager.state == side)
+        {
+            var ex = $"Bad side: {side}" + (m != "" ? " | " + m : "");
             LogError(ex);
             throw new Exception(ex);
             //return true;
-            }
+        }
         //return false;
     }
     public static void ThrowDoIt(string m = "")
@@ -338,18 +382,22 @@ public static class Utils
     {
         //Global.networkService.CallOnServer(nameof(Log), "Hello");
     }
-    public enum LogType{
+    public enum LogType
+    {
         Console, Screen, File
     }
-    public static void LogSide(NetworkMonoBehaviour sender, LogType logType = LogType.Screen){
+    public static void LogSide(NetworkMonoBehaviour sender, LogType logType = LogType.Screen)
+    {
         var m = (sender.isServer ? 'S' : 'C');
-        switch (logType){
+        switch (logType)
+        {
             case LogType.Console:
                 Debug.Log(m);
                 break;
         }
     }
-    public static void LogError(string m){
+    public static void LogError(string m)
+    {
         Log(m, color: Color.red);
     }
 
@@ -393,7 +441,7 @@ public static class Utils
 
     public static void log(object message, bool active = true)
     {
-        if(active)
+        if (active)
             Debug.Log(message);
     }
 

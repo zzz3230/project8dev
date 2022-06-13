@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -26,7 +25,7 @@ public class BaseUnitComponentClass : MonoBehaviour
     {
         if (!unbreakable)
             _health -= value * damageFactors.First((f) => { return f.type == type; }).factor;
-        
+
         return _health;
     }
 }

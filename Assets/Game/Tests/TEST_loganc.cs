@@ -1,8 +1,6 @@
 using IronPython.Hosting;
-using IronPython.Runtime;
 using IronPython.Runtime.Types;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,7 +32,7 @@ public class CoreCL
 //[ExecuteInEditMode]
 public class TEST_loganc : MonoBehaviour
 {
-    
+
     private void Start()
     {
         return;
@@ -62,7 +60,7 @@ public class TEST_loganc : MonoBehaviour
 
 
 
-        
+
         //Instantiate(PrefabManager.Instance.GetPrefabByUUID("f20a7075-115c-43ff-962c-6fce03f8a0e6")).transform.parent = transform;
         var eng = Python.CreateEngine();
         var scope = eng.CreateScope();

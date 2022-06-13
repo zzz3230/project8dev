@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseUnitComponent : MonoBehaviour
@@ -29,12 +27,12 @@ public class BaseUnitComponent : MonoBehaviour
     }
     private void Update()
     {
-        if(isUpdating)
+        if (isUpdating)
             GameUpdate();
     }
     private void FixedUpdate()
     {
-        if(isFixedUpdating)
+        if (isFixedUpdating)
             GameFixedUpdate();
     }
 }

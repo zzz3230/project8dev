@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
 using System;
 using System.IO;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 #if UNITY_EDITOR
 
@@ -29,7 +27,7 @@ public class ResourcesManagerEditor : Editor
         //serializedObject.Update();
 
         GameResourcesManager resManager = (GameResourcesManager)target;
-        
+
 
         isOnScene = resManager.gameObject.scene.name != null;
 
@@ -128,7 +126,7 @@ public class PrefabManagerEditor : Editor
     }
     void EnableGUI()
     {
-        if(!isOnScene)
+        if (!isOnScene)
             GUI.enabled = true;
     }
 
@@ -150,7 +148,7 @@ public class PrefabManagerEditor : Editor
 
         var prefab = EditorGUILayout.ObjectField("Prefab", prefabManager.selectedPrefab, typeof(Prefab), false) as Prefab;
 
-        if(prefab != null)
+        if (prefab != null)
         {
             prefabManager.selectedPrefab = prefab;
         }
@@ -165,7 +163,7 @@ public class PrefabManagerEditor : Editor
         EditorGUILayout.TextField(showGuid.ToString());
         if (GUILayout.Button("Add"))
         {
-            
+
             var selected = prefabManager.selectedPrefab;
             var uuid = selected.uuid == Guid.Empty.ToString() ? Guid.NewGuid().ToString() : selected.uuid;
 
@@ -183,7 +181,7 @@ public class PrefabManagerEditor : Editor
             }
             else
                 EditorUtility.DisplayDialog("Alert", "Prefab is already added", "ok");
-            
+
         }
 
         _editNames = EditorGUILayout.Toggle("Edit names", _editNames);
@@ -192,9 +190,9 @@ public class PrefabManagerEditor : Editor
         {
             var prefabInfo = prefabManager.prefabs[i];
 
-            GUILayout.BeginHorizontal(); 
-            EditorGUILayout.TextField(prefabInfo.uuid); 
-            if(GUILayout.Button("Copy"))
+            GUILayout.BeginHorizontal();
+            EditorGUILayout.TextField(prefabInfo.uuid);
+            if (GUILayout.Button("Copy"))
                 GUIUtility.systemCopyBuffer = prefabInfo.uuid;
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
@@ -210,7 +208,7 @@ public class PrefabManagerEditor : Editor
             EditorGUILayout.Space();
         }
 
-        if(GUILayout.Button("Update all uuids"))
+        if (GUILayout.Button("Update all uuids"))
         {
             for (int i = 0; i < prefabManager.prefabs.Count; i++)
             {
@@ -218,7 +216,7 @@ public class PrefabManagerEditor : Editor
 
                 Undo.RecordObject(prefabManager.prefabs[i].prefab, "set uuid");
             }
-            
+
         }
 
 
@@ -229,7 +227,7 @@ public class PrefabManagerEditor : Editor
             PrefabUtility.RecordPrefabInstancePropertyModifications(prefabManager);
 
             var filePath = Path.Combine(Utils.LOG_PATH, "prefabs_infos", $"{DateTime.Now:dMMMyyyy}_prefab_info.json");
-            if(!File.Exists(filePath))
+            if (!File.Exists(filePath))
                 File.WriteAllText(filePath, Newtonsoft.Json.JsonConvert.SerializeObject(prefabManager.prefabs));
         }
         //serializedObject.ApplyModifiedProperties();

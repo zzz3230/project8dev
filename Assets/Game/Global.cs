@@ -1,7 +1,7 @@
-using UnityEngine;
 using OldNetwork;
 
-public static class Global {
+public static class Global
+{
 
     public static GameManagerScript gameManager
     {
@@ -33,17 +33,19 @@ public static class Global {
     static PrefabManager _prefabManager;
 
 
-    public static NetworkManager networkManager {
-        get {return _networkManager;}
-        set {if(_networkManager == null) _networkManager = value;} 
-        }
+    public static NetworkManager networkManager
+    {
+        get { return _networkManager; }
+        set { if (_networkManager == null) _networkManager = value; }
+    }
     static NetworkManager _networkManager;
 
 
-    public static NetworkService networkService {
-        get {return _networkService;}
-        set {if(_networkService == null) _networkService = value;} 
-        }
+    public static NetworkService networkService
+    {
+        get { return _networkService; }
+        set { if (_networkService == null) _networkService = value; }
+    }
     static NetworkService _networkService;
 
     public static NetworkObjectsManager networkObjectsManager

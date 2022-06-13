@@ -1,10 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using ENet;
-using System.Text;
-using System;
-using OldNetwork;
 
 public enum GameState
 {

@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using UnityEngine;
 using System.Linq;
+using System.Text;
 
 public class GameSavingManager
 {
@@ -28,8 +25,11 @@ public class WorldSavingManager
     {
         public const string static_res = "static/";
         public const string worldx_regs = "world_{0}/regs/";
+        public const string worldx_unit_components = "world_{0}/ucmp/";
         public const string worldx_items = "extra/items/";
         public static string Worldx_regs(int x) { return string.Format(worldx_regs, x.ToString()); }
+
+        public static string Worldx_unit_components(int x) { return string.Format(worldx_unit_components, x.ToString()); }
         public static string Items() { return string.Format(worldx_items); }
         public const string player = "extra/";
         //public const string world0_regs = "world_0/regs/";
@@ -41,7 +41,7 @@ public class WorldSavingManager
         public static string World_itemx_name(int x) { return string.Format(world_itemx_name, x); }
 
         public const string saves = "saves/{0}/";
-        public static string Saves(string name) { return @"D:\unity_project\Project8\test_save\" + string.Format(saves, name);}
+        public static string Saves(string name) { return @"D:\unity_project\Project8\test_save\" + string.Format(saves, name); }
         public static string StaticRes(string name, string fileName) { return @"D:\unity_project\Project8\test_save\" + static_res + name + @"\" + fileName; }
     }
     string saveName;
@@ -52,13 +52,17 @@ public class WorldSavingManager
         this.saveName = saveName;
         this.worldIndex = worldIndex;
     }
-
-    string MakeWorldRegPath(int x, int y) 
-    { 
-        return 
-            Paths.Saves(saveName) + 
-            Paths.Worldx_regs(worldIndex) + 
-            Paths.World_regxy_name(x, y); 
+    string MakeWorldUnitComponentsPath(int x)
+    {
+        return
+            Paths.Worldx_unit_components(x);
+    }
+    string MakeWorldRegPath(int x, int y)
+    {
+        return
+            Paths.Saves(saveName) +
+            Paths.Worldx_regs(worldIndex) +
+            Paths.World_regxy_name(x, y);
     }
     string MakeItemPath(int x)
     {
@@ -84,12 +88,12 @@ public class WorldSavingManager
 
     void ValidatePath(string path)
     {
-        if(!Directory.Exists(Path.GetDirectoryName(path)))
+        if (!Directory.Exists(Path.GetDirectoryName(path)))
             Directory.CreateDirectory(Path.GetDirectoryName(path));
     }
     void ValidateFile(string path, object def)
     {
-        if(!File.Exists(path))
+        if (!File.Exists(path))
             File.Create(path).Close();
     }
 
@@ -121,15 +125,15 @@ public class WorldSavingManager
             fr = Enumerable.Repeat(FileRecordStructs.FR_ItemInstance.empty, ITEM_REGION_COUNT).ToArray();
 
         var items = new ItemInstance[ITEM_REGION_COUNT];
-        for(int i = 0; i < ITEM_REGION_COUNT; i++)
+        for (int i = 0; i < ITEM_REGION_COUNT; i++)
         {
-            if(fr[i].count != 0)
+            if (fr[i].count != 0)
                 items[i] = new ItemInstance
                 {
                     count = fr[i].count,
                     empty = false,
                     metadata = fr[i].metadata,
-                    info = BasicConsoleScript.Instance.debugItems.First((x) => x.id.ToString() == fr[i].id)
+                    info = ItemsHub.GetItemInfoByStrId(fr[i].id)//BasicConsoleScript.Instance.debugItems.First((x) => x.id.ToString() == fr[i].id)
                 };
         }
         return items;
@@ -143,7 +147,7 @@ public class WorldSavingManager
         var fr = new FileRecordStructs.FR_ItemInstance[ITEM_REGION_COUNT];
         for (int i = 0; i < ITEM_REGION_COUNT; i++)
         {
-            if(items[i] != null)
+            if (items[i] != null)
                 fr[i] = new FileRecordStructs.FR_ItemInstance
                 {
                     count = items[i].count,

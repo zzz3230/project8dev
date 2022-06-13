@@ -1,8 +1,7 @@
-using System.Collections;
+using ENet;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using ENet;
 namespace OldNetwork
 {
     public class NetworkClientsManager : MonoBehaviour

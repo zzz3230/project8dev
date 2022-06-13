@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8769f73447a94f14ca8fef388cb735d6, type: 3}
+  m_Name: soif_testitem_python_3
+  m_EditorClassIdentifier: 
+  item:
+    id: 2
+    strId: ~SIID
+    tags: []
+    stack: 32
+    name:
+      uuid: 
+      _text: hello world
+    ico: {fileID: 8228938214290033325, guid: e84010cbf25fe5b44b6ef5e4bce6944a, type: 3}
+    builderId: 0
+    discardedObjectInfo:
+      type: 0
+      prefab: {fileID: 0}
+    handItemInfo:
+      interactiveHandObject: {fileID: 9106269731922669311, guid: f070adfed48619945ab5d863d582b65f, type: 3}
+      staticHandObject: {fileID: 6659170575466551999, guid: bae473202069ba342903665007d934b6, type: 3}
+      damageFactor: 1.14
+      damageType: 0
+      interactive: 1
+    buildingInfo:
+      placeable: 0
+      placingPrefab: {fileID: 4075079070496081821, guid: 7ce18756e60b31c4e878382bcf308323, type: 3}
+      previewPrefab: {fileID: 4075079070496081821, guid: 7ce18756e60b31c4e878382bcf308323, type: 3}

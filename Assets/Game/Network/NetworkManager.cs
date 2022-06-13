@@ -1,12 +1,10 @@
+using ENet;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
-using System;
-using ENet;
-using System.Reflection;
-using System.Threading;
-using System.Collections;
-using System.Threading.Tasks;
 namespace OldNetwork
 {
     public class NetworkManager : MonoBehaviour
@@ -377,7 +375,7 @@ namespace OldNetwork
                 ulong cbi = 0;
                 if (makeCallbackIndex)
                 {
-                    cbi = Utils.RandomUlong();
+                    cbi = Utils.NextUlong();
                     data.callbackIndex = cbi;
                 }
                 ClientSendObject(data);
@@ -395,7 +393,7 @@ namespace OldNetwork
                     ulong cbi = 0;
                     if (makeCallbackIndex)
                     {
-                        cbi = Utils.RandomUlong();
+                        cbi = Utils.NextUlong();
                         data.callbackIndex = cbi;
                     }
 
@@ -417,7 +415,7 @@ namespace OldNetwork
                 ulong cbi = 0;
                 if (makeCallbackIndex)
                 {
-                    cbi = Utils.RandomUlong();
+                    cbi = Utils.NextUlong();
                     data.callbackIndex = cbi;
                 }
 

@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 using System;
-using System.Linq;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class StPythonEngine
 {
@@ -20,14 +18,16 @@ public class StPythonEngine
 
         ICollection<string> searchPaths = eng.GetSearchPaths();
         //searchPaths.Add(Application.dataPath);Python
+        searchPaths.Add(Application.streamingAssetsPath + "/Lib/");
+        /*
+        #if UNITY_EDITOR
+                searchPaths.Add(Application.dataPath + @"\StreamingAssets\Lib\");
+        #endif
+        #if !UNITY_EDITOR
 
-#if UNITY_EDITOR
-        searchPaths.Add(Application.dataPath + @"\StreamingAssets\Lib\");
-#endif
-#if !UNITY_EDITOR
-        searchPaths.Add(System.IO.Directory.GetCurrentDirectory() + @"\StreamingAssets\Lib\");
-#endif
-
+                searchPaths.Add(System.IO.Directory.GetCurrentDirectory() + @"\StreamingAssets\Lib\");
+        #endif
+        */
         eng.SetSearchPaths(searchPaths);
 
         eng.Execute(@"
@@ -41,7 +41,7 @@ from __future__ import unicode_literals
 ", scope);
 
     }
-    public Action<string> onCatchException;
+    public event Action<string> onCatchException;
     public bool ContainsVariable(string name)
     {
         return scope.ContainsVariable(name);
@@ -112,7 +112,7 @@ from __future__ import unicode_literals
     }
     public void ExecuteFile(string path, bool gameSouce = false)
     {
-        if(gameSouce)
+        if (gameSouce)
             path = Application.streamingAssetsPath + "/GameSource" + path;
         try
         {

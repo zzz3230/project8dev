@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 //using UnityEditor.PackageManager;
@@ -25,7 +24,7 @@ namespace OldNetwork
 
         public ulong InitNetworkMonoBehaviour(NetworkMonoBehaviour obj)
         {
-            var newIndex = Utils.RandomUlong();
+            var newIndex = Utils.NextUlong();
             _objects.Add(newIndex, obj);
 
             return newIndex;

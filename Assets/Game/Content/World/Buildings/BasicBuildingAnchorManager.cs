@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public enum BuildingAnchorDirection
 {
@@ -15,7 +14,7 @@ public enum BuildingAnchorDirection
     FUpLeft,
     FUpRight,
     FDownLeft,
-    FDownRight, 
+    FDownRight,
     BUpLeft,
     BUpRight,
     BDownLeft,
@@ -47,7 +46,7 @@ public class BasicBuildingAnchorManager : MonoBehaviour
             anchorsActiveValues.Add(val);
         }
     }
-    
+
     public bool GetAnchorActive(BuildingAnchorDirection dir)
     {
         if (anchorsActiveKeys.Contains(dir))

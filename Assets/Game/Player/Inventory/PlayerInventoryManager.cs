@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInventoryManager : MonoBehaviour
@@ -52,7 +50,7 @@ public class PlayerInventoryManager : MonoBehaviour
     {
         if (count <= 0)
             return;
-         
+
         SlotManager.MoveItems(source, destination, count);
 
         CallUpdate();

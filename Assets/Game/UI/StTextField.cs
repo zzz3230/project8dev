@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Scripting;
@@ -41,8 +39,8 @@ public class StTextField : StVisualElement
                 //$"focus out {ev.timestamp}".log();
             });
 
-            textField.RegisterCallback<FocusInEvent>((ev) => 
-            { 
+            textField.RegisterCallback<FocusInEvent>((ev) =>
+            {
                 //evSys.enabled = false; 
                 StInput.isTextFieldEditing = true;
                 lastIn = true;

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TransformSyncArticle : BaseSyncArticle
@@ -28,11 +26,11 @@ public class TransformSyncArticle : BaseSyncArticle
     {
         var data = (TransformSyncArticleData)value;
 
-        if(data.pos != null)
+        if (data.pos != null)
             transform.position = data.pos.Value.GetVector3();
-        if(data.rot != null)
+        if (data.rot != null)
             transform.rotation = data.rot.Value;
-        if(data.scale != null)
+        if (data.scale != null)
             transform.localScale = data.scale.Value.GetVector3();
     }
     public override object S_GetValue()
@@ -44,12 +42,12 @@ public class TransformSyncArticle : BaseSyncArticle
         else
             data.pos = null;
 
-        if(syncRotation)
+        if (syncRotation)
             data.rot = transform.rotation;
         else
             data.rot = null;
 
-        if(syncScale)
+        if (syncScale)
             data.scale = new SerVector3(transform.localScale);
         else
             data.scale = null;

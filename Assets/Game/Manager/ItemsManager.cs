@@ -1,13 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
 public static class ItemsManagerPointerUtils
 {
     public static void Swap(this ItemsManagerPointer a, ItemsManagerPointer b)
     {
         (b.sector, a.sector) = (a.sector, b.sector);
-        (b.offset, a.offset) = (a.offset, b.offset); 
+        (b.offset, a.offset) = (a.offset, b.offset);
         (b.count, a.count) = (a.count, b.count);
     }
     public static void SetFrom(this ItemsManagerPointer a, ItemsManagerPointer b)
@@ -23,12 +21,12 @@ public static class ItemsManagerPointerUtils
         b[0].count = a[0].count;
         b[0].empty = false;
 
-        if(a[0].metadata != null)
+        if (a[0].metadata != null)
             b[0].metadata = Utils.DeepCopy(a[0].metadata);
     }
     public static void MoveTo(this ItemsManagerPointer a, ItemsManagerPointer b, int count)
     {
-        if(count == 0)
+        if (count == 0)
         {
             Log.Error("moving count == 0", "itemsmanagerpointerutils-move");
             return;
@@ -37,15 +35,15 @@ public static class ItemsManagerPointerUtils
         int bCount = b[0] != null ? b[0].count : 0;
         var rest = a[0].count - count;
 
-        if(rest < 0)
+        if (rest < 0)
         {
             Log.Error($"rest in slot a less than zero", "itemsmanagerpointerutils-move");
             return;
         }
-        
-        if(rest == 0)
+
+        if (rest == 0)
         {
-            Swap(b, a); 
+            Swap(b, a);
 
             b[0].count = count + bCount;
 
@@ -62,6 +60,7 @@ public static class ItemsManagerPointerUtils
     }
 }
 
+[System.Serializable]
 public class ItemsManagerPointer
 {
     public int offset;
@@ -94,7 +93,7 @@ public static class ItemsManager
         ItemsManagerPointer finalPointer = null;
         int iterCount = 0;
 
-        while(finalPointer == null)
+        while (finalPointer == null)
         {
             iterCount += 1;
             for (int i = 0; i < _loadedSectors.Keys.Count; i++)
@@ -114,7 +113,7 @@ public static class ItemsManager
 
     static void LoadSector(int index)
     {
-        if(_loadedSectors.ContainsKey(index))
+        if (_loadedSectors.ContainsKey(index))
         {
             Log.Error($"sector with index {index} already loaded", "itemsmanager-loadsector");
             return;

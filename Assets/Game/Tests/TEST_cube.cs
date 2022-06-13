@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using OldNetwork;
+using UnityEngine;
 
 public class TEST_cube : NetworkMonoBehaviour
 {
@@ -29,7 +26,7 @@ public class TEST_cube : NetworkMonoBehaviour
 
                 transform.position = hit.point;
             }
-            
+
         }
     }
 }

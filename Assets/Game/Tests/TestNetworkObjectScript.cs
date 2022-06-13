@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using OldNetwork;
+using UnityEngine;
 
 public class TestNetworkObjectScript : NetworkMonoBehaviour
 {

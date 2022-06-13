@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,9 +8,10 @@ public class Test_uicode : MonoBehaviour
     void Start()
     {
 
-        uiDoc.rootVisualElement.Q("start-btn").RegisterCallback<ClickEvent>( 
-            (ev) => { 
-                
+        uiDoc.rootVisualElement.Q("start-btn").RegisterCallback<ClickEvent>(
+            (ev) =>
+            {
+
                 //print("Hello world!"); 
             });
     }
@@ -20,6 +19,6 @@ public class Test_uicode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

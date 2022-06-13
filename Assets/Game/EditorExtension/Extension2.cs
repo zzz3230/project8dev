@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
@@ -33,10 +31,16 @@ public class PythonMonoBehaviourScriptEditor : Editor
             pyMonoBehaviour.scriptPath = path.Replace(StPythonEngine.MakeGameSourcePath(""), "");
         }
 
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("root"), new GUIContent("Root object:"));
+
+        //var list = pyMonoBehaviour.variables;
+        var list = serializedObject.FindProperty("variables");
+        EditorGUILayout.PropertyField(list, new GUIContent("Variables:"), true);
+
         GUILayout.Space(5);
 
         GUI.enabled = Application.isPlaying;
-        if(GUILayout.Button("Reload scipt"))
+        if (GUILayout.Button("Reload scipt"))
         {
             pyMonoBehaviour.ReloadScript();
         }
@@ -46,6 +50,7 @@ public class PythonMonoBehaviourScriptEditor : Editor
         {
             EditorUtility.SetDirty(pyMonoBehaviour);
             PrefabUtility.RecordPrefabInstancePropertyModifications(pyMonoBehaviour);
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

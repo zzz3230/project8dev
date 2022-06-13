@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 using UnityEngine.Scripting;
 using UnityEngine.UIElements;
-using System;
 
 public class ConsoleUIManager : StVisualElement
 {
@@ -30,12 +27,12 @@ public class ConsoleUIManager : StVisualElement
         {
             if (created)
                 return;
-            
+
 
             outLabel = this.Q<Label>("console-out-label");
             commandField = this.Q<StTextField>("command-field");
 
-            
+
 
             outLabel.text = "";
             commandField.value = "";

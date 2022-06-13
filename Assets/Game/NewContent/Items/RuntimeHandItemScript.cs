@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(RuntimeUnitInfoScript))]
 public class RuntimeHandItemScript : RuntimeUnitScript
 {
     protected void DurabilityUpdated()

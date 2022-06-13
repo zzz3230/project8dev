@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public enum SavingDataId
 {
@@ -34,7 +31,7 @@ public class SavingDataManager
         return default;
     }
 
-    public void Set(object data, SavingDataId id, SavingDataFormat format = 
+    public void Set(object data, SavingDataId id, SavingDataFormat format =
         (SavingDataFormat.Json | SavingDataFormat.UserProperty | SavingDataFormat.StandardFile))
     {
 

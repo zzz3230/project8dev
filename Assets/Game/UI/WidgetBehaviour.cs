@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WidgetBehaviour : MonoBehaviour
@@ -11,5 +9,10 @@ public class WidgetBehaviour : MonoBehaviour
     public void Show()
     {
         gameObject.SetActive(true);
+    }
+
+    public T CastTo<T>() where T : WidgetBehaviour
+    {
+        return (T)this;
     }
 }

@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HandItemManager : MonoBehaviour
 {
     public Transform anchor;
-    public GameObject itemObjectInstance; 
-    
+    public GameObject itemObjectInstance;
+
     public DefBuilder defBuilderOriginal;
     public DefBuilder defBuilder;
     public NewBasePlayerScript playerScript;
@@ -27,15 +25,28 @@ public class HandItemManager : MonoBehaviour
 
     public void UseItem(MouseButton mbtn)
     {
-        if(mbtn == MouseButton.Right)
+        if (mbtn == MouseButton.Right)
         {
             if (building)
+            {
                 defBuilder.Place();
+                return;
+            }
+        }
+
+        if (itemObjectInstance && itemObjectInstance.TryGetComponent<OnUseComponentScript>(out var onUseComponent))
+        {
+            onUseComponent.PlayerUsed(new OnUseEventData { mouseButton = mbtn });
         }
     }
-
+    ItemsManagerPointer _itemPtr;
+    public ItemsManagerPointer GetItemPtr()
+    {
+        return _itemPtr;
+    }
     public void SetCurrentInHandItem(ItemsManagerPointer ptr)
     {
+        _itemPtr = ptr;
         Destroy(itemObjectInstance);
         if (building)
         {
@@ -44,13 +55,13 @@ public class HandItemManager : MonoBehaviour
         }
 
         var item = ptr[0];
-        
+
         if (item.empty)
             return;
 
         if (item.info.buildingInfo.placeable)
         {
-            if(item.info.builderId == BuilderID.Def)
+            if (item.info.builderId == BuilderID.Def)
             {
                 defBuilder.BeginBuilding(playerScript, item.info.buildingInfo.previewPrefab.GetComponent<RuntimeBuildingInfoScript>());
                 building = true;
@@ -58,7 +69,7 @@ public class HandItemManager : MonoBehaviour
             return;
         }
 
-        if(item.info.handItemInfo.interactiveHandObject != null)
+        if (item.info.handItemInfo.interactiveHandObject != null)
         {
             var pref = Instantiate(item.info.handItemInfo.interactiveHandObject, anchor);
             var info = pref.GetComponent<RuntimeUnitInfoScript>();

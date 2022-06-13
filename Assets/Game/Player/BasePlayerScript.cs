@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using OldNetwork;
+using UnityEngine;
 
 public class BasePlayerScript : NetworkMonoBehaviour
 {
@@ -60,33 +58,33 @@ public class BasePlayerScript : NetworkMonoBehaviour
         //Debug.Log(1f);
         //if (isOwner)
         //{
-            var move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        var move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-            //transform.Translate(move * Time.deltaTime * 30);
-            //_rb.velocity = Quaternion.AngleAxis(transform.position.y, move * Time.deltaTime * 12).eulerAngles;
+        //transform.Translate(move * Time.deltaTime * 30);
+        //_rb.velocity = Quaternion.AngleAxis(transform.position.y, move * Time.deltaTime * 12).eulerAngles;
 
-            //transform.Translate(move * Time.deltaTime * 30);\
-            //if (!isServer)
-            //{
-            //    if (move != lastSendedMove)
-            ////    {
-            //        CallOnServer(nameof(S_MovePlayer), false, move.GetSerVector3());
-            //        lastSendedMove = move;
-            //    }
-            //}
-            //else
-                s_move = move;
+        //transform.Translate(move * Time.deltaTime * 30);\
+        //if (!isServer)
+        //{
+        //    if (move != lastSendedMove)
+        ////    {
+        //        CallOnServer(nameof(S_MovePlayer), false, move.GetSerVector3());
+        //        lastSendedMove = move;
+        //    }
+        //}
+        //else
+        s_move = move;
 
         //}
-        
+
 
 
 
         //if (isServer)
         //{
-            var moveRot = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+        var moveRot = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
         //print(_collisionChecker.contactCount);
-        if(_collisionChecker.onGround)
+        if (_collisionChecker.onGround)
             _rb.velocity =
                     //_rb.MovePosition(
                     //    _rb.position + 
@@ -102,7 +100,7 @@ public class BasePlayerScript : NetworkMonoBehaviour
             //)
             ;
         //}
-        
+
     }
 
     void LockMouse()

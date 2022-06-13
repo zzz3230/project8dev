@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
-public enum BuildingConnectionType { Anchor, Free}
+public enum BuildingConnectionType { Anchor, Free }
 public struct BuildingConnection
 {
     public RuntimeBuildingInfoScript baseObj;
@@ -23,7 +22,7 @@ public class BasicBuildingGroup : BaseBuildingGroup
         if (_enviroment == null)
             _enviroment = new GameObject("enviroment");
         //return default;
-        GameObject gameObject = new GameObject(nameof(BasicBuildingGroup) + "_GameObject", 
+        GameObject gameObject = new GameObject(nameof(BasicBuildingGroup) + "_GameObject",
             typeof(BasicBuildingGroup),
             typeof(Rigidbody));
 
@@ -33,10 +32,10 @@ public class BasicBuildingGroup : BaseBuildingGroup
 
     List<RuntimeBuildingInfoScript> _objects = new List<RuntimeBuildingInfoScript> { };
 
-    Dictionary<RuntimeBuildingInfoScript, List<RuntimeBuildingInfoScript>> _objectsLinks = 
+    Dictionary<RuntimeBuildingInfoScript, List<RuntimeBuildingInfoScript>> _objectsLinks =
         new Dictionary<RuntimeBuildingInfoScript, List<RuntimeBuildingInfoScript>> { };
 
-    List<BuildingConnection> _objectsConnections = 
+    List<BuildingConnection> _objectsConnections =
         new List<BuildingConnection> { };
 
     public void Add(RuntimeBuildingInfoScript obj, RuntimeBuildingInfoScript by, BuildingConnection connectionInfo)
@@ -45,7 +44,7 @@ public class BasicBuildingGroup : BaseBuildingGroup
 
         _objects.Add(obj);
         _objectsLinks.Add(obj, new List<RuntimeBuildingInfoScript> { });
-        if(by != null)
+        if (by != null)
         {
             //_objectsLinks[by].Add(obj);
             _objectsLinks.AddValueToListByKey(by, obj);
@@ -82,7 +81,7 @@ public class BasicBuildingGroup : BaseBuildingGroup
         return result;
     }
 
-    public void Remove(RuntimeBuildingInfoScript obj) 
+    public void Remove(RuntimeBuildingInfoScript obj)
     {
         obj.gameObject.transform.SetParent(this.transform.parent);
 
@@ -93,7 +92,7 @@ public class BasicBuildingGroup : BaseBuildingGroup
 
         var sgr = Create();
         sgr._objects = sobjs.ToList();
-        sgr._objectsLinks = 
+        sgr._objectsLinks =
             _objectsLinks.Where((x) => sgr._objects.Contains(x.Key)).ToDictionary(x => x.Key, x => x.Value);
         for (int i = 0; i < sgr._objectsLinks.Count; i++)
         {
@@ -105,7 +104,7 @@ public class BasicBuildingGroup : BaseBuildingGroup
 
 
         _objects = fobjs;
-        _objectsLinks = 
+        _objectsLinks =
             _objectsLinks.Where((x) => _objects.Contains(x.Key)).ToDictionary(x => x.Key, x => x.Value);
         UpdateTransforms();
 
@@ -134,7 +133,7 @@ public class BasicBuildingGroup : BaseBuildingGroup
         Debug.Log(str);
     }
 
-    public void Break() 
+    public void Break()
     {
         _objects.ForEach((x) => x.gameObject.transform.SetParent(this.transform.parent));
     }

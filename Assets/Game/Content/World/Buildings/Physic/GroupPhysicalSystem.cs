@@ -1,16 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public struct Weight
 {
-    public enum WeightFormat { Kg, Mass, UniWeight}
+    public enum WeightFormat { Kg, Mass, UniWeight }
 
-    public float mass 
-    { 
+    public float mass
+    {
         get
         {
-            return  ConvertUniWeight(_uniWeight, WeightFormat.Mass);
+            return ConvertUniWeight(_uniWeight, WeightFormat.Mass);
         }
     }
 
@@ -79,7 +77,7 @@ public struct Weight
 public class GroupPhysicalSystem
 {
     public Dictionary<BaseBuildingPrefabClass, Weight> CalcObjectsWeight(
-        List<BaseBuildingPrefabClass> objects, 
+        List<BaseBuildingPrefabClass> objects,
         Dictionary<BaseBuildingPrefabClass, List<BaseBuildingPrefabClass>> links,
         Dictionary<BaseBuildingPrefabClass, BuildingConnection> connections)
     {

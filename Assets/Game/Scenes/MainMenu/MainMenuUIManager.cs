@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.UIElements;
 
@@ -13,7 +10,7 @@ public class MainMenuUIManager : VisualElement
             this.Q("menu-host-btn")?.RegisterCallback<ClickEvent>((ev) =>
             {
 
-            }); 
+            });
             this.Q("menu-client-btn")?.RegisterCallback<ClickEvent>((ev) =>
             {
 

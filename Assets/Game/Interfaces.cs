@@ -1,13 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public interface ILoaded
 {
-    public Action<object> loaded {
+    public Action<object> loaded
+    {
         get { return _loaded; }
-        set { if (tocall) value(self); _loaded = value; } 
+        set { if (tocall) value(self); _loaded = value; }
     }
 
     Action<object> _loaded { get; set; }
@@ -18,7 +16,7 @@ public interface ILoaded
     {
         //if(tocall && loaded != null)
         this.self = self;
-        if(loaded == null)
+        if (loaded == null)
         {
             tocall = true;
             return;

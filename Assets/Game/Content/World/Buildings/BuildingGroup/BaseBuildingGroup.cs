@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public struct CollisionStayInfo
 {
@@ -18,8 +17,8 @@ public class BaseBuildingGroup : MonoBehaviour
     {
         //lastImpulse = collision.impulse;
 
-        
-        
+
+
         var thisObj = collision.contacts.Select((c) => c.thisCollider.gameObject);
         var otherObj = collision.contacts.Select((c) => c.otherCollider.gameObject);
 

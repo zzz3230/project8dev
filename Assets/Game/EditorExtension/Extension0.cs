@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using System.Linq;
 using OldNetwork;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(NetworkPrefabsManager))]
@@ -16,7 +14,7 @@ public class PrefabsIndexator : Editor
         if (GUILayout.Button("Reindex all prefab"))
         {
             myTarget.prefabs = new List<NetworkPrefab> { };
-            
+
             var paths = AssetDatabase.GetAllAssetPaths();
             Debug.Log(Utils.ArrToStr(paths));
 
@@ -26,7 +24,7 @@ public class PrefabsIndexator : Editor
                 for (int j = 0; j < assets.Length; j++)
                 {
                     var obj = assets[j] as GameObject;
-                    if(obj != null)
+                    if (obj != null)
                     {
                         if (obj.TryGetComponent<NetworkPrefab>(out var mp))
                         {
@@ -35,9 +33,10 @@ public class PrefabsIndexator : Editor
                     }
                 }
             }
-            
+
         }
-        if (GUILayout.Button("Set index s")){
+        if (GUILayout.Button("Set index s"))
+        {
             myTarget.prefabs.ForEach((p) => p.index = myTarget.GetPrefabIndex(p));
         };
 
@@ -151,7 +150,7 @@ public class BuildingAnchorManagerEditor : Editor
                 EditorUtility.SetDirty(myTarget);
                 PrefabUtility.RecordPrefabInstancePropertyModifications(myTarget);
             }
-                
+
         }
 
         //EditorGUILayout.LabelField("Level", myTarget.Level.ToString());
@@ -161,7 +160,7 @@ public class BuildingAnchorManagerEditor : Editor
 
 
 public class UI : MonoBehaviour
-{ 
+{
     public static GameObject text;
 
     [MenuItem("UI/Text")]

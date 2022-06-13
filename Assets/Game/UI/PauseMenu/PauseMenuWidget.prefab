@@ -259,16 +259,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3356374254046138432, guid: b99763bf50a2afb42aa2d63821d4cb62, type: 3}
       propertyPath: m_fontSize
-      value: 144.9
+      value: 85.03
       objectReference: {fileID: 0}
     - target: {fileID: 3356374254046138432, guid: b99763bf50a2afb42aa2d63821d4cb62, type: 3}
       propertyPath: m_fontSizeBase
-      value: 144.9
+      value: 85.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356374254046138432, guid: b99763bf50a2afb42aa2d63821d4cb62, type: 3}
+      propertyPath: m_isOrthographic
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3356374254046138432, guid: b99763bf50a2afb42aa2d63821d4cb62, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 9219392147726988291, guid: 4af9f3520fa2cc448a1d229f582f46a5, type: 2}
+      objectReference: {fileID: -5240799831465336386, guid: 6bf4116a87bb01c4cb7433c8841fcaa7, type: 2}
+    - target: {fileID: 3356374254046138432, guid: b99763bf50a2afb42aa2d63821d4cb62, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
     - target: {fileID: 3356374254046138432, guid: b99763bf50a2afb42aa2d63821d4cb62, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
@@ -307,11 +315,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7012088963600020878, guid: b99763bf50a2afb42aa2d63821d4cb62, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 482.844
+      value: 973.3619
       objectReference: {fileID: 0}
     - target: {fileID: 7012088963600020878, guid: b99763bf50a2afb42aa2d63821d4cb62, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 147.6728
+      value: 297.9215
       objectReference: {fileID: 0}
     - target: {fileID: 7012088963600020878, guid: b99763bf50a2afb42aa2d63821d4cb62, type: 3}
       propertyPath: m_LocalPosition.x
@@ -347,7 +355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7012088963600020878, guid: b99763bf50a2afb42aa2d63821d4cb62, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 263
+      value: 291
       objectReference: {fileID: 0}
     - target: {fileID: 7012088963600020878, guid: b99763bf50a2afb42aa2d63821d4cb62, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

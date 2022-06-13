@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.UIElements;
 
@@ -12,8 +9,8 @@ public class TestOfVIsualEl : VisualElement
     {
         RegisterCallback<GeometryChangedEvent>((ev) =>
         {
-            this.Q("test-btn")?.RegisterCallback<ClickEvent>((ev) => 
-            { 
+            this.Q("test-btn")?.RegisterCallback<ClickEvent>((ev) =>
+            {
                 progress++;
                 this.Q<ProgressBar>("test-progbar").value = progress;
 

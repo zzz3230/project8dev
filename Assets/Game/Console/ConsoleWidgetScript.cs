@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using System;
+using TMPro;
+using UnityEngine;
 
 public class ConsoleWidgetScript : WidgetBehaviour
 {
@@ -20,16 +18,16 @@ public class ConsoleWidgetScript : WidgetBehaviour
     void ExecEntred()
     {
         var res = cmdEngine.Execute(inputField.text);
-        if(res != null)// && (res.GetType() == typeof(string) && res != ""))
+        if (res != null)// && (res.GetType() == typeof(string) && res != ""))
         {
-            if(res.GetType() != typeof(string))
+            if (res.GetType() != typeof(string))
             {
                 cmdEngine.SetVar(res, "_");
                 res = cmdEngine.Execute($"str(_)");
             }
             WriteLine(res);
         }
-            
+
 
         inputField.text = "";
     }
@@ -37,12 +35,12 @@ public class ConsoleWidgetScript : WidgetBehaviour
     {
         if (instance != null)
             Log.Error($"instance of {nameof(ConsoleWidgetScript)} already exist");
-        instance = this; 
+        instance = this;
         cmdEngine = StPython.CreateEngine();
     }
     private void Start()
     {
-        inputField.text = ""; 
+        inputField.text = "";
         cmdEngine.onCatchException += (s) => WriteLine($"<color=red>{s}</color>");
     }
 

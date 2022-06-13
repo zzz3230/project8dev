@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +21,7 @@ public class PrefabJsonConverter : JsonConverter
 
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
-        if(objectType == typeof(Prefab))
+        if (objectType == typeof(Prefab))
             return PrefabManager.Instance.GetPrefabByUUID(((string)existingValue));
         throw new Exception("json reading error: not a prefab");
     }
@@ -49,7 +48,7 @@ public class PrefabManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public Prefab GetPrefabByUUID(string uuid) 
+    public Prefab GetPrefabByUUID(string uuid)
         => prefabs.Find(x => x.uuid == uuid).prefab;
 
     public static PrefabManager Instance { get { return Global.prefabManager; } }

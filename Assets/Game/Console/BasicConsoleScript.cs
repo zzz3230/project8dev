@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UNET;
-using System.Linq;
-using IronPython;
+using UnityEngine;
 
 public static class BasicConsole
 {
@@ -109,7 +106,7 @@ public class BasicConsoleScript : MonoBehaviour
         });
         BasicConsole.AttachCom("client", () =>
         {
-            GetComponent<Unity.Netcode.NetworkManager>().StartClient(); 
+            GetComponent<Unity.Netcode.NetworkManager>().StartClient();
             //GetComponent<Unity.Netcode.NetworkManager>().ConnectedClients[0].
 
         });
@@ -131,7 +128,7 @@ public class BasicConsoleScript : MonoBehaviour
             //Global.networkObjectsManager.MirrorToClient(serverPlayer, client);
             //Global.networkObjectsManager.MirrorToClient(clientPlayer, client);
             var player = Instantiate(playerOriginal);
-            player.SpawnWithOwnership(1); 
+            player.SpawnWithOwnership(1);
             InitializeClientRPC(1, player.NetworkObjectId);
         });
 
@@ -151,7 +148,7 @@ public class BasicConsoleScript : MonoBehaviour
     {
         print("client: " + clientId);
         callback(false, 0, true, Vector3.zero, Quaternion.identity);
-        
+
     }
 
     string param = "127.0.0.1";

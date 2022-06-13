@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 8649133428019311218}
   - component: {fileID: 2748342439311769781}
   - component: {fileID: -8901210165715222895}
+  - component: {fileID: -3615563377025775463}
   m_Layer: 0
   m_Name: Basic_StatBuildPref
   m_TagString: Untagged
@@ -304,7 +305,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   root: {fileID: 3486524666679670808}
+  playerScript: {fileID: 0}
   anchorManager: {fileID: 1419488501041718754}
+  group: {fileID: 0}
 --- !u!114 &-8901210165715222895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,6 +321,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   info: {fileID: 2748342439311769781}
+--- !u!114 &-3615563377025775463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7113050363406051633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c77c5367e85125a46a36c7e57b72900c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0
+  drawSphere: 0
 --- !u!1 &8267588510337841867
 GameObject:
   m_ObjectHideFlags: 0
